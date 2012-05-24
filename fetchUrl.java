@@ -87,66 +87,60 @@ class fetchUrl
       InputStream stream;
       byte data[] = { 0, 0, 0, 0, 0 };
       int len;
-      int index;
-      int num_args;
 
+      try
+      {
+         url = new URL(url_string);
+      }
+      catch (MalformedURLException e1)
+      {
+         //System.out.printf("Error: could not open URL, %s", url_string);
+         return;
+      }
+
+      try
+      {
+         if (fetchUrl.proxy_string.isEmpty() == false)
+         {
+            stream = url.openConnection(fetchUrl.proxy).getInputStream();
+         }
+         else
+         {
+            stream = url.openStream();
+         }
+      }
+      catch (IOException e2)
+      {
+         System.out.println("Error: could not open stream");
+         return;
+      }
+
+      for (;;)
+      {
          try
          {
-            url = new URL(url_string);
+            len = stream.read(data,0,5);
          }
-         catch (MalformedURLException e1)
+         catch (IOException e3)
          {
-            //System.out.printf("Error: could not open URL, %s", url_string);
+            System.out.println("Error: could not read stream");
             return;
          }
 
-         try
+         if (len > 0)
          {
-            if (fetchUrl.proxy_string.isEmpty() == false)
-            {
-               stream = url.openConnection(fetchUrl.proxy).getInputStream();
-            }
-            else
-            {
-               stream = url.openStream();
-            }
+            System.out.write(data,0,len);
+            System.out.flush();
          }
-         catch (IOException e2)
+         else
          {
-            System.out.println("Error: could not open stream");
-            return;
+            break;
          }
-
-         for (;;)
-         {
-            try
-            {
-               len = stream.read(data,0,5);
-            }
-            catch (IOException e3)
-            {
-               System.out.println("Error: could not read stream");
-               return;
-            }
-
-            if (len > 0)
-            {
-               System.out.write(data,0,len);
-               System.out.flush();
-            }
-            else
-            {
-               break;
-            }
-         }
+      }
    }
 
    public static void main(String args[])
    {
-      URL url;
-      InputStream stream;
-      byte data[] = { 0, 0, 0, 0, 0 };
-      int len;
       int index;
       int num_args;
 
