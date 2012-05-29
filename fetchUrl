@@ -17,4 +17,16 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-java fetchUrl $@
+JAVA=`which java`
+KAFFE=`which kaffe`
+VM=
+
+if [ "${JAVA}x" != "x" ]; then
+   VM=${JAVA}
+elif [ "${KAFFE}x" != "x" ]; then
+   VM=${KAFFE}
+fi
+
+if [ "${VM}x" != "x" ]; then
+   ${VM} fetchUrl $@
+fi
