@@ -19,8 +19,12 @@
 */
 
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.net.Proxy;
+import java.net.URL;
 
 class fetchUrl
 {
@@ -34,7 +38,7 @@ class fetchUrl
       int num_args;
       int flags;
 
-      fetchUrl.proxy_string = new String("");
+      fetchUrl.proxy_string = "";
 
       try
       {
