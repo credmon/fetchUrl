@@ -105,7 +105,7 @@ class fetchUrl
       }
    }
 
-   private static void fetchUrl(String url_string)
+   private static int fetchUrl(String url_string)
    {
       URL url;
       InputStream stream;
@@ -118,8 +118,8 @@ class fetchUrl
       }
       catch (MalformedURLException e1)
       {
-         //System.out.printf("Error: could not open URL, %s", url_string);
-         return;
+         System.out.printf("Error: malformed URL, %s", url_string);
+         return -1;
       }
 
       try
@@ -136,7 +136,7 @@ class fetchUrl
       catch (IOException e2)
       {
          System.out.println("Error: could not open stream");
-         return;
+         return -1;
       }
 
       for (;;)
@@ -148,7 +148,7 @@ class fetchUrl
          catch (IOException e3)
          {
             System.out.println("Error: could not read stream");
-            return;
+            return -1;
          }
 
          if (len > 0)
@@ -161,25 +161,35 @@ class fetchUrl
             break;
          }
       }
+
+      return 0;
    }
 
    public static void main(String args[])
    {
       int index;
+      int retval;
       int num_args;
 
-      num_args = fetchUrl.getopt(args);
+      retval = fetchUrl.getopt(args);
 
-      if (num_args < 0)
+      if (retval < 0)
       {
-         return;
+         System.exit(retval);
       }
+
+      num_args = retval;
 
       fetchUrl.setupProxy();
 
       for (index = 0; index < num_args; index++)
       {
-         fetchUrl.fetchUrl(args[index]);
+         retval = fetchUrl.fetchUrl(args[index]);
+
+         if (retval < 0)
+         {
+            System.exit(retval);
+         }
       }
    }
 }
