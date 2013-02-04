@@ -20,6 +20,7 @@
 JAVA=`which java`
 KAFFE=`which kaffe`
 VM=
+DIR=`dirname $0`
 
 if [ "${JAVA}x" != "x" ]; then
    VM=${JAVA}
@@ -28,5 +29,5 @@ elif [ "${KAFFE}x" != "x" ]; then
 fi
 
 if [ "${VM}x" != "x" ]; then
-   ${VM} fetchUrl $@
+   ${VM} -cp ${DIR} fetchUrl $@
 fi
